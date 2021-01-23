@@ -1,52 +1,56 @@
 pipeline {
     agent any
-    parameters {
-            string(name: 'BROWSER', defaultValue: 'both', description: 'Browsers to run: Both, Chrome, Firefox')
-            string(name: 'chrome', defaultValue: 'chrome', description: 'Chrome browser')
-            string(name: 'firefox', defaultValue: 'firefox', description: 'Firefox browser')
-            }
-
+    environment {
+        PW = 'CoolCanvas19.'
+        USER_NAME = 'user8'
+        BASE_URL = 'https://jira.codecool.codecanvas.hu'
+        GRID_URL = 'https://selenium:CoolCanvas19.@seleniumhub.codecool.codecanvas.hu/wd/hub'
+        WAIT = 10
+    }
     stages {
-        stage('Build') {
+        stage('Clean up') {
             steps {
-                echo 'Build phase: '
-                sh 'mvn clean'
+                cleanWs()
             }
         }
-        stage('Test') {
+        stage('Set up Git') {
+            steps {
+                git branch: 'master',
+                    //credentialsId:'2f24bb349e96511a7b431f54d86626aea32bb71f',
+                    url: 'https://github.com/mpanka/JiraRegressionProject'
+            }
+        }
+        stage('Parallel tests') {
             parallel {
-                stage('run with chrome') {
-                   when {
-                        expression { params.BROWSER == 'both' || params.BROWSER == 'chrome' }
-                   }
-                   steps {
-                        sh 'mvn -Dtest=LoginTest#testLoginSuccessful test'
-                   }
-                   post {
+                stage('Chrome') {
+                    environment {
+                        BROWSER = 'chrome'
+                    }
+                    steps {
+                        sh 'mvn test'
+                    }
+                    post {
                         always {
-                            junit 'target/surefire-reports/*.xml'
+                            junit allowEmptyResults: true,
+                            testResults: '**/target/surefire-reports/*.xml'
                         }
-                   }
+                    }
                 }
-                stage('run with firefox') {
-                   when {
-                        expression { params.BROWSER == 'both' || params.BROWSER == 'firefox' }
-                   }
-                   steps {
-                        sh 'mvn -Dtest=LoginTest#testLoginSuccessful test'
-                   }
-                   post {
+                stage('Firefox') {
+                    environment {
+                        BROWSER = 'firefox'
+                    }
+                    steps {
+                        sh 'mvn test'
+                    }
+                    post {
                         always {
-                            junit 'target/surefire-reports/*.xml'}
+                            junit allowEmptyResults: true,
+                            testResults: '**/target/surefire-reports/*.xml'
                         }
-                   }
+                    }
                 }
             }
-        }
-    post {
-        always {
-            echo 'Cleanup phase: '
-            cleanWs()
         }
     }
 }
