@@ -1,7 +1,7 @@
 #JiraRegressionProject
 
 In this project I used jenkins for cross-platform testing in Chrome and Firefox browsers
-with my previous jira tests.
+with the login part of my previous jira tests.
 
 #Concepts Included:
 
