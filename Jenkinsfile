@@ -47,6 +47,7 @@ pipeline {
                 }
             }
         }
+    }
     post {
         always {
             echo 'Cleanup phase: '
