@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Parallel tests') {
             parallel {
-                stage('Chrome') {
+                stage('run with chrome') {
                     environment {
                         BROWSER = 'chrome'
                     }
@@ -36,7 +36,7 @@ pipeline {
                         }
                     }
                 }
-                stage('Firefox') {
+                stage('run with firefox') {
                     environment {
                         BROWSER = 'firefox'
                     }
