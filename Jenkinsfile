@@ -1,5 +1,13 @@
 pipeline {
     agent any
+    environment {
+            PASSWORD = 'CoolCanvas19.'
+            SELENIUM_PASSWORD = 'CoolCanvas19.'
+            USERNAME = 'user8'
+            BASE_URL = 'https://jira.codecool.codecanvas.hu'
+            GRID_URL = 'https://selenium:CoolCanvas19.@seleniumhub.codecool.codecanvas.hu/wd/hub'
+            WAIT = 10
+    }
     stages {
         stage('Build') {
             steps {
@@ -14,18 +22,7 @@ pipeline {
                          expression { params.browserToRun == 'both' || params.browserToRun == 'chrome' }
                          }
                     steps {
-                        script {withCredentials([usernamePassword(
-                              credentialsId: 'jira2-admin',
-                              passwordVariable: 'pass',
-                              usernameVariable: 'user'),
-                              usernamePassword(
-                              credentialsId: 'jira-user6-credentials',
-                              passwordVariable: 'sel_pass',
-                              usernameVariable: 'username')]) {
-                                   echo 'Test phase with chrome: '
-                                   sh "mvn test -DUSER=$user -DPASS=$pass -DSEL_PASS=$sel_pass"
-                              }
-                        }
+                         sh 'mvn test'
                     }
                     post {
                         always {
@@ -39,18 +36,7 @@ pipeline {
                          expression { params.browserToRun == 'both' || params.browserToRun == 'firefox' }
                          }
                     steps {
-                        script {withCredentials([usernamePassword(
-                              credentialsId: 'jira2-admin',
-                              passwordVariable: 'pass',
-                              usernameVariable: 'user'),
-                              usernamePassword(
-                              credentialsId: 'jira-user6-credentials',
-                              passwordVariable: 'sel_pass',
-                              usernameVariable: 'username')]) {
-                                   echo 'Test phase with firefox: '
-                                   sh "mvn test -DUSER=$user -DPASS=$pass -DSEL_PASS=$sel_pass"
-                              }
-                        }
+                         sh 'mvn test'
                     }
                     post {
                         always {
