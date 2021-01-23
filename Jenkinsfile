@@ -1,55 +1,70 @@
 pipeline {
     agent any
-    environment {
-        PW = 'CoolCanvas19.'
-        USER_NAME = 'user8'
-        BASE_URL = 'https://jira.codecool.codecanvas.hu'
-        GRID_URL = 'https://selenium:CoolCanvas19.@seleniumhub.codecool.codecanvas.hu/wd/hub'
-        WAIT = 10
-    }
     stages {
-        stage('Clean up') {
+        stage('Build') {
             steps {
-                cleanWs()
+                sh 'mvn clean'
             }
         }
-        stage('Set up Git') {
-            steps {
-                git branch: 'master',
-                    url: 'https://github.com/mpanka/JiraRegressionProject'
-            }
-        }
+
         stage('Parallel tests') {
             parallel {
                 stage('run with chrome') {
-                    environment {
-                        BROWSER = 'chrome'
-                    }
+                    when {
+                         expression { params.browserToRun == 'both' || params.browserToRun == 'chrome' }
+                         }
                     steps {
-                        sh 'mvn test'
+                        script {withCredentials([usernamePassword(
+                              credentialsId: 'jira2-admin',
+                              passwordVariable: 'pass',
+                              usernameVariable: 'user'),
+                              usernamePassword(
+                              credentialsId: 'jira-user6-credentials',
+                              passwordVariable: 'sel_pass',
+                              usernameVariable: 'username')]) {
+                                   echo 'Test phase with chrome: '
+                                   sh "mvn test -DUSER=$user -DPASS=$pass -DSEL_PASS=$sel_pass"
+                              }
+                        }
                     }
                     post {
                         always {
                             junit allowEmptyResults: true,
-                            testResults: '**/target/surefire-reports/*.xml'
+                            testResults: 'target/surefire-reports/*.xml'
                         }
                     }
                 }
                 stage('run with firefox') {
-                    environment {
-                        BROWSER = 'firefox'
-                    }
+                    when {
+                         expression { params.browserToRun == 'both' || params.browserToRun == 'firefox' }
+                         }
                     steps {
-                        sh 'mvn test'
+                        script {withCredentials([usernamePassword(
+                              credentialsId: 'jira2-admin',
+                              passwordVariable: 'pass',
+                              usernameVariable: 'user'),
+                              usernamePassword(
+                              credentialsId: 'jira-user6-credentials',
+                              passwordVariable: 'sel_pass',
+                              usernameVariable: 'username')]) {
+                                   echo 'Test phase with firefox: '
+                                   sh "mvn test -DUSER=$user -DPASS=$pass -DSEL_PASS=$sel_pass"
+                              }
+                        }
                     }
                     post {
                         always {
                             junit allowEmptyResults: true,
-                            testResults: '**/target/surefire-reports/*.xml'
+                            testResults: 'target/surefire-reports/*.xml'
                         }
                     }
                 }
             }
+        }
+    post {
+        always {
+            echo 'Cleanup phase: '
+            cleanWs()
         }
     }
 }
