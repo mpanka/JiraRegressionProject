@@ -7,5 +7,5 @@ public class Util {
     public static final String USERNAME = System.getProperty("jiraUsername");
     public static final String PASSWORD = System.getProperty("jiraPassword");
     public static final String SELENIUM_PASSWORD = System.getProperty("seleniumPassword");
-    public static final String BASE_URL = System.getProperty("jiraBaseUrl");
+    public static final String BASE_URL = "https://jira.codecool.codecanvas.hu/";
 }
