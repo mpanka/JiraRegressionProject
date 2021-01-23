@@ -6,6 +6,6 @@ public class Util {
     public static final String WEBDRIVER = "webdriver.chrome.driver";
     public static final String USERNAME = System.getenv("jiraUsername");
     public static final String PASSWORD = System.getenv("jiraPassword");
-    public static final String SELENIUM_PASSWORD = System.getenv("seleniumPassword"); //TODO
+    public static final String SELENIUM_PASSWORD = System.getenv("seleniumPassword");
     public static final String BASE_URL = System.getenv("jiraBaseUrl");
 }

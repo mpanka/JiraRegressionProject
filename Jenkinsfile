@@ -16,7 +16,6 @@ pipeline {
         stage('Set up Git') {
             steps {
                 git branch: 'master',
-                    //credentialsId:'2f24bb349e96511a7b431f54d86626aea32bb71f',
                     url: 'https://github.com/mpanka/JiraRegressionProject'
             }
         }
