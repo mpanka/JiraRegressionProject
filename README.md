@@ -1,9 +1,9 @@
-#JiraRegressionProject
+# JiraRegressionProject
 
 In this project I used jenkins for cross-platform testing in Chrome and Firefox browsers
 with the login part of my previous jira tests.
 
-#Concepts Included:
+# Concepts Included:
 
 Page Object pattern
 Keyword driven testing
@@ -14,6 +14,6 @@ Selenium Webdriver: Chrome and Chromedriver (UI tests use Chrome by default, can
 Java
 Maven
 
-#Reporting
+# Reporting
  
 TestScript contains 5 tests, from which 5 passes.
