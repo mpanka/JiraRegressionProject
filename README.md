@@ -18,4 +18,4 @@ Maven
  
 TestScript contains 5 tests, from which 5 passes.
 
-After every commit tests will run automatically in a remote server with jenkins. (jenkins user8/loginRegression) mpanka's Jira tests.
+After every commit, tests will run automatically in a remote server with jenkins. (jenkins user8/loginRegression) mpanka's Jira tests.
