@@ -17,3 +17,5 @@ Maven
 # Reporting
  
 TestScript contains 5 tests, from which 5 passes.
+
+After every commit tests will run in a remote server with jenkins.
