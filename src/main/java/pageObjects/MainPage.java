@@ -16,10 +16,10 @@ public class MainPage extends BasePageObject {
     protected WebElement profileImg;
 
     @FindBy(xpath = "//*[@id='content']//a[2]")
-    private WebElement expandSidebar;
+    protected WebElement expandSidebar;
 
     @FindBy(xpath = "//*[@id='content']/div[1]//header/div/div[2]//a")
-    private WebElement projectName;
+    protected WebElement projectName;
 
     public MainPage(WebDriver driver) {
         super(driver);
